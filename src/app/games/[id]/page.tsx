@@ -9,7 +9,7 @@ export default async function DetailPage(context: any) {
 
   return (
     <div>
-      <DetailGame gamesId={id} game={detailGameById} />
+      <DetailGame game={detailGameById} />
     </div>
   );
 }

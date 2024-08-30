@@ -8,8 +8,7 @@ export default async function MainContent({ searchParams }: any) {
   return (
     <div className="flex flex-col">
       <div>
-        <h1 className="text-7xl font-semibold">New and trending</h1>
-        <span className="text-sm">Based on player counts and release date</span>
+        <h1 className="text-7xl font-semibold">Trending Games</h1>
 
         <CardsContent games={games} />
 

@@ -35,7 +35,7 @@ export const platform_game = [
   },
 ];
 
-const ratings_game = [
+export const ratings_game = [
   {
     name: "exceptional",
     icon: <BsFire className="text-rose-500" />,
