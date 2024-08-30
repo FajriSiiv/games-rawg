@@ -1,5 +1,4 @@
-import * as React from "react";
-
+"use client";
 import {
   Select,
   SelectContent,
@@ -10,24 +9,49 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "./ui/button";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
-export function SelectGenres({ genres, setSelectGenre, selectedGenre }: any) {
-  const submitSelectGenre = (e: React.FormEvent) => {
+export function SelectGames({ genres, developers }: any) {
+  const paramsSearch = useSearchParams();
+  const genreParams = paramsSearch.get("genres");
+  const developersParams = paramsSearch.get("developers");
+
+  // let genresParams = genreParams.toString().split("=")[1];
+  const [selectedGenre, setSelectedGenre] = useState<any>(genreParams);
+  const [selectedDeveloper, setSelectedDeveloper] =
+    useState<any>(developersParams);
+
+  const submitSelectGames = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (selectedGenre) {
-      console.log("Selected Genre ID:", selectedGenre);
-    } else {
-      console.log("No genre selected");
+      window.location.href = `/?genres=${selectedGenre}`;
+    }
+
+    if (selectedDeveloper) {
+      window.location.href = `/?developers=${selectedDeveloper}`;
+    }
+
+    if (selectedGenre && selectedDeveloper) {
+      window.location.href = `/?genres=${selectedGenre}&developers=${selectedDeveloper}`;
     }
   };
 
-  const handleSelectChange = (value: string) => {
-    setSelectGenre(value);
+  const handleSelectGenre = (value: string) => {
+    setSelectedGenre(value);
   };
+
+  const handleSelectDeveloper = (value: string) => {
+    setSelectedDeveloper(value);
+  };
+
   return (
-    <form onSubmit={submitSelectGenre}>
-      <Select onValueChange={handleSelectChange} defaultValue={selectedGenre}>
+    <form onSubmit={submitSelectGames} className="flex w-fit gap-x-3">
+      <Select
+        onValueChange={handleSelectGenre}
+        defaultValue={selectedGenre ? selectedGenre : undefined}
+      >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a Genre" />
         </SelectTrigger>
@@ -35,7 +59,7 @@ export function SelectGenres({ genres, setSelectGenre, selectedGenre }: any) {
           <SelectGroup>
             <SelectLabel>Genres</SelectLabel>
             {genres.map((genre: any) => (
-              <SelectItem value={genre.id.toString()} key={genre.id}>
+              <SelectItem value={genre.slug} key={genre.id}>
                 {genre.name}
               </SelectItem>
             ))}
@@ -43,6 +67,24 @@ export function SelectGenres({ genres, setSelectGenre, selectedGenre }: any) {
         </SelectContent>
       </Select>
 
+      <Select
+        onValueChange={handleSelectDeveloper}
+        defaultValue={selectedDeveloper ? selectedDeveloper : undefined}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select a Developer" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Developer</SelectLabel>
+            {developers.map((developer: any) => (
+              <SelectItem value={developer.slug} key={developer.id}>
+                {developer.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
       <Button type="submit">Select</Button>
     </form>
   );

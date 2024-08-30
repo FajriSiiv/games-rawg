@@ -9,7 +9,6 @@ import { AiFillLike } from "react-icons/ai";
 import { LuMeh } from "react-icons/lu";
 import { MdOutlineDoNotDisturbOn } from "react-icons/md";
 import { FaApple } from "react-icons/fa";
-import { TooltipTag } from "@/components/tooltip-tag";
 import { Separator } from "@/components/ui/separator";
 
 export const platform_game = [
@@ -57,7 +56,7 @@ export const ratings_game = [
 const CardsContent = ({ games }: { games: any }) => {
   // const [games, setGames] = useState([]);
 
-  const [gridWidth, setGridWidth] = useState<number>(4);
+  const [gridWidth, setGridWidth] = useState<number>(5);
 
   useEffect(() => {
     const updateGridWidth = () => {
@@ -66,7 +65,7 @@ const CardsContent = ({ games }: { games: any }) => {
       } else if (window.innerWidth <= 768) {
         setGridWidth(3);
       } else if (window.innerWidth <= 1300) {
-        setGridWidth(4);
+        setGridWidth(5);
       }
     };
 
@@ -99,7 +98,7 @@ const CardsContent = ({ games }: { games: any }) => {
   };
 
   return (
-    <div className={`grid grid-cols-4 max-md:grid-cols-3 mt-10 gap-5`}>
+    <div className={`grid grid-cols-5 max-md:grid-cols-3 mt-10 gap-5`}>
       {Array.from({ length: gridWidth }, (_, index) => index).map((a) => (
         <div className="flex flex-col gap-5 " key={a}>
           {groupedGames[a]?.map((game: any) => (
@@ -120,32 +119,43 @@ const CardsContent = ({ games }: { games: any }) => {
               />
               <div className="p-2 flex flex-col gap-y-1 overflow-hidden h-fit ">
                 {(() => {
-                  const highestRating = game.ratings.reduce(
-                    (max: any, rating: any) =>
-                      rating.count > max.count ? rating : max
-                  );
+                  const highestRating = game?.ratings?.length
+                    ? game.ratings.reduce(
+                        (max: any, rating: any) =>
+                          rating.count > max.count ? rating : max,
+                        { count: 0 }
+                      )
+                    : null;
 
-                  const findIcon = ratings_game.find((p) =>
-                    highestRating.title.toLowerCase().includes(p.name)
-                  );
+                  const findIcon = highestRating?.title
+                    ? ratings_game.find((p) =>
+                        highestRating.title.toLowerCase().includes(p.name)
+                      )
+                    : null;
 
                   return (
-                    <span
-                      className="absolute top-2 right-2 text-2xl z-10 p-2 bg-white/80 rounded-full"
-                      key={findIcon?.name}
-                    >
-                      {findIcon?.icon}
-                    </span>
+                    findIcon && (
+                      <span
+                        className="absolute top-2 right-2 text-2xl z-10 p-2 bg-white/80 rounded-full"
+                        key={findIcon?.name}
+                      >
+                        {findIcon?.icon}
+                      </span>
+                    )
                   );
                 })()}
                 <div className="flex gap-x-1 flex-wrap">
                   {game.parent_platforms.map((platform: any) => {
-                    const findIcon = platform_game.find((p) =>
-                      platform.platform.name.toLowerCase().includes(p.name)
-                    );
+                    const findIcon = platform_game
+                      ? platform_game.find((p) =>
+                          platform.platform.name.toLowerCase().includes(p.name)
+                        )
+                      : null;
 
                     return (
-                      <span key={platform.platform.id}>{findIcon?.icon}</span>
+                      findIcon && (
+                        <span key={platform.platform.id}>{findIcon?.icon}</span>
+                      )
                     );
                   })}
                 </div>
@@ -160,7 +170,10 @@ const CardsContent = ({ games }: { games: any }) => {
                   <div className="flex text-sm justify-between text-slate-500/50">
                     <span className="flex-1">Genres : </span>
                     <p className="text-white/80 flex-1 text-end">
-                      {game.genres.map((a: any) => a.name).join(", ")}
+                      {game.genres
+                        .slice(0, 6)
+                        .map((a: any) => a.name)
+                        .join(", ")}
                     </p>
                   </div>
                   <Separator className="my-2" />

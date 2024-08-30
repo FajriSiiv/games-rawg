@@ -9,33 +9,67 @@ import {
   PaginationLink,
 } from "@/components/ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 export default function PaginationButton({
   searchParams,
+  games,
 }: {
   searchParams: string;
+  games: any;
 }) {
+  const paramsSearch = useSearchParams();
+  const genres = paramsSearch.get("genres");
+  const developers = paramsSearch.get("developers");
+
   const [numberSetPagination, setNumberSetPagination] = useState(3);
+
+  // let pages = Math.ceil(games.length / 4);
+
+  // if (games.length < 10) {
+  //   pages -= 1;
+  // }
+
   const prevButtonPage = () => {
-    return (window.location.href = `/?page=${parseFloat(searchParams) - 1}`);
+    if (genres) {
+      window.location.href = `/?page=${
+        parseFloat(searchParams) - 1
+      }&genres=${genres}`;
+    } else {
+      window.location.href = `/?page=${parseFloat(searchParams) - 1}`;
+    }
   };
 
   const nextButtonPage = () => {
-    return searchParams === undefined
-      ? (window.location.href = `/?page=2`)
-      : (window.location.href = `/?page=${parseFloat(searchParams) + 1}`);
+    if (genres) {
+      window.location.href = `/?page=${
+        parseFloat(searchParams) + 1
+      }&genres=${genres}`;
+    } else if (developers) {
+      window.location.href = `/?page=${
+        parseFloat(searchParams) + 1
+      }&developers=${developers}`;
+    } else if (genres && developers) {
+      window.location.href = `/?page=${
+        parseFloat(searchParams) + 1
+      }&genres=${genres}&developers=${developers}`;
+    } else {
+      searchParams === undefined
+        ? (window.location.href = `/?page=2`)
+        : (window.location.href = `/?page=${parseFloat(searchParams) + 1}`);
+    }
   };
 
   const arraySet =
     parseFloat(searchParams) <= 2
-      ? [1, 2, 3, 4, 5]
+      ? [1, 2, 3]
       : Array.from(
           { length: numberSetPagination },
           (v, i) => i + parseFloat(searchParams)
         );
 
   const arrayPrevSet =
-    parseFloat(searchParams) <= 2
+    parseFloat(searchParams) <= 1
       ? []
       : Array.from({ length: 2 }, (v, i) => i + (parseFloat(searchParams) - 2));
 
