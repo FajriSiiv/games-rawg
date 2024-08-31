@@ -25,13 +25,18 @@ const DetailGame = ({ game }: any) => {
 
   const monthName = monthNames[parseInt(month, 10) - 1];
 
-  const highestRating = game.ratings.reduce((max: any, rating: any) =>
-    rating.count > max.count ? rating : max
-  );
+  const highestRating = game?.ratings?.length
+    ? game.ratings.reduce(
+        (max: any, rating: any) => (rating.count > max.count ? rating : max),
+        { count: 0 }
+      )
+    : null;
 
-  const findRating = ratings_game.find((p) =>
-    highestRating.title.toLowerCase().includes(p.name)
-  );
+  const findRating = highestRating?.title
+    ? ratings_game.find((p) =>
+        highestRating.title.toLowerCase().includes(p.name)
+      )
+    : null;
 
   const platformPlay = game.platforms
     .map((platformObj: any) => platformObj.platform.name)
@@ -99,7 +104,8 @@ const DetailGame = ({ game }: any) => {
             <div className="flex space-x-4">
               <div className="flex flex-col space-y-2">
                 <h2 className="capitalize text-4xl font-semibold flex gap-x-2">
-                  {findRating?.name} {findRating?.icon}
+                  {findRating && findRating?.name}{" "}
+                  {findRating && findRating?.icon}
                 </h2>
                 <h3 className="text-xl underline">{game.rating} Rating</h3>
               </div>

@@ -107,16 +107,21 @@ const CardsContent = ({ games }: { games: any }) => {
               key={game.id}
               onClick={() => linkDetailGame(game.id)}
             >
-              <Image
-                height={200}
-                width={300}
-                alt={game.name}
-                src={game.background_image}
-                className="object-cover"
-                placeholder="blur"
-                blurDataURL="/path-to-low-resolution-image-or-placeholder"
-                quality={50}
-              />
+              {game.background_image ? (
+                <Image
+                  height={200}
+                  width={300}
+                  alt={game.name}
+                  src={game.background_image}
+                  className="object-cover"
+                  loading="lazy"
+                  quality={30}
+                />
+              ) : (
+                <div className="h-[200px] w-full bg-rose-500/30 flex justify-center items-center">
+                  <p className="text-3xl">NO IMAGE</p>
+                </div>
+              )}
               <div className="p-2 flex flex-col gap-y-1 overflow-hidden h-fit ">
                 {(() => {
                   const highestRating = game?.ratings?.length
@@ -159,7 +164,7 @@ const CardsContent = ({ games }: { games: any }) => {
                     );
                   })}
                 </div>
-                <h2 className="text-[26px] w-5/6 font-semibold">{game.name}</h2>
+                <h2 className="text-[16px] w-5/6 font-semibold">{game.name}</h2>
 
                 <div className="">
                   <p className="flex text-sm justify-between text-slate-500/50">
@@ -179,7 +184,9 @@ const CardsContent = ({ games }: { games: any }) => {
                   <Separator className="my-2" />
                   <p className="flex text-sm justify-between text-slate-500/50">
                     Rating :{" "}
-                    <span className="text-white/80">{game.rating}</span>
+                    <span className="text-white/80">
+                      {game.rating === 0 ? "No Rating" : game.rating}
+                    </span>
                   </p>
                 </div>
               </div>

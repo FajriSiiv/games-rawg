@@ -25,7 +25,7 @@ export const getGames = async (
     const res = await fetch(
       `${API_URL}/games?key=${API_KEY}&page=${currentPage.toString()}&page_size=35${genresSet}${dev}`,
       {
-        next: { revalidate: 120 },
+        next: { revalidate: 3000 },
       }
     );
 

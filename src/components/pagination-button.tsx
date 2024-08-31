@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function PaginationButton({
   searchParams,
@@ -22,13 +23,15 @@ export default function PaginationButton({
   const genres = paramsSearch.get("genres");
   const developers = paramsSearch.get("developers");
 
-  const [numberSetPagination, setNumberSetPagination] = useState(3);
+  if (games === undefined) {
+    return (
+      <Button onClick={() => (window.location.href = "/")}>Go Back</Button>
+    );
+  }
 
-  // let pages = Math.ceil(games.length / 4);
+  const [numberSetPagination, setNumberSetPagination] = useState(2);
 
-  // if (games.length < 10) {
-  //   pages -= 1;
-  // }
+  // let checkDataHasMore = Math.ceil(games.length / 10);
 
   const prevButtonPage = () => {
     if (genres) {
@@ -69,11 +72,37 @@ export default function PaginationButton({
         );
 
   const arrayPrevSet =
-    parseFloat(searchParams) <= 1
+    parseFloat(searchParams) < 3
       ? []
-      : Array.from({ length: 2 }, (v, i) => i + (parseFloat(searchParams) - 2));
+      : Array.from({ length: 1 }, (v, i) => i + (parseFloat(searchParams) - 1));
+
+  const maxNumberPage = Array.from(
+    { length: 1 },
+    (v, i) => i + arraySet[arraySet.length - 1]
+  );
 
   const fixPaginationNumber = [...arrayPrevSet, ...arraySet];
+
+  // const maxPaginationNumber = [...arrayPrevSet];
+
+  // const arrayPagination =
+  //   checkDataHasMore < 1
+  //     ? [...arrayPrevSet, arrayPrevSet[0] + 1, ...maxNumberPage]
+  //     : fixPaginationNumber;
+
+  // console.log([...arrayPrevSet, arrayPrevSet[0] + 1, ...maxNumberPage]);
+
+  const btnLinkTag = (paginationNumber: any) => {
+    if (genres && developers) {
+      return `/?page=${paginationNumber}&genres=${genres}&developers=${developers}`;
+    } else if (genres) {
+      return `/?page=${paginationNumber}&genres=${genres}`;
+    } else if (developers) {
+      return `/?page=${paginationNumber}&developers=${developers}`;
+    } else {
+      return `/?page=${paginationNumber}`;
+    }
+  };
 
   return (
     <div className="mt-20">
@@ -92,7 +121,8 @@ export default function PaginationButton({
           {fixPaginationNumber.map((paginationNumber) => (
             <PaginationItem key={paginationNumber}>
               <PaginationLink
-                href={`/?page=${paginationNumber}`}
+                // href={`/?page=${paginationNumber}`}
+                href={btnLinkTag(paginationNumber)}
                 isActive={paginationNumber === parseFloat(searchParams)}
               >
                 {paginationNumber}

@@ -17,7 +17,6 @@ export function SelectGames({ genres, developers }: any) {
   const genreParams = paramsSearch.get("genres");
   const developersParams = paramsSearch.get("developers");
 
-  // let genresParams = genreParams.toString().split("=")[1];
   const [selectedGenre, setSelectedGenre] = useState<any>(genreParams);
   const [selectedDeveloper, setSelectedDeveloper] =
     useState<any>(developersParams);
