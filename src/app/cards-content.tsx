@@ -60,9 +60,11 @@ const CardsContent = ({ games }: { games: any }) => {
 
   useEffect(() => {
     const updateGridWidth = () => {
-      if (window.innerWidth <= 640) {
-        setGridWidth(2);
+      if (window.innerWidth <= 500) {
+        setGridWidth(1);
       } else if (window.innerWidth <= 768) {
+        setGridWidth(2);
+      } else if (window.innerWidth <= 1024) {
         setGridWidth(3);
       } else if (window.innerWidth <= 1300) {
         setGridWidth(5);
@@ -98,12 +100,14 @@ const CardsContent = ({ games }: { games: any }) => {
   };
 
   return (
-    <div className={`grid grid-cols-5 max-md:grid-cols-3 mt-10 gap-5`}>
+    <div
+      className={`grid grid-cols-5 max-lg:grid-cols-3 max-md:grid-cols-2 mt-10 max-sm:grid-cols-1 gap-5`}
+    >
       {Array.from({ length: gridWidth }, (_, index) => index).map((a) => (
-        <div className="flex flex-col gap-5 " key={a}>
+        <div className="flex flex-col gap-5" key={a}>
           {groupedGames[a]?.map((game: any) => (
             <div
-              className="border overflow-hidden rounded-md relative group bg-slate-800/50 cursor-pointer hover:scale-105 hover:shadow-md hover:shadow-slate-200/20  transition-all"
+              className="border overflow-hidden rounded-md relative group bg-slate-800/50 cursor-pointer hover:scale-105 hover:shadow-md hover:shadow-slate-200/20  transition-all max-sm:w-fit"
               key={game.id}
               onClick={() => linkDetailGame(game.id)}
             >

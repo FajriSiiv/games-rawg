@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import CardsContent from "./cards-content";
 import { getDeveloper, getGames, getGenres } from "../../server/games-api";

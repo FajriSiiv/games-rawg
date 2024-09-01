@@ -4,13 +4,13 @@ import { Button } from "./ui/button";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import NotFound from "@/app/not-found";
 
 export default function PaginationButton({
   searchParams,
@@ -25,7 +25,8 @@ export default function PaginationButton({
 
   if (games === undefined) {
     return (
-      <Button onClick={() => (window.location.href = "/")}>Go Back</Button>
+      // <Button onClick={() => (window.location.href = "/")}>Go Back</Button>
+      <NotFound />
     );
   }
 

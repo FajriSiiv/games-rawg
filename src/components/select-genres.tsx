@@ -46,7 +46,10 @@ export function SelectGames({ genres, developers }: any) {
   };
 
   return (
-    <form onSubmit={submitSelectGames} className="flex w-fit gap-x-3">
+    <form
+      onSubmit={submitSelectGames}
+      className="flex w-fit gap-3 max-md:flex-col"
+    >
       <Select
         onValueChange={handleSelectGenre}
         defaultValue={selectedGenre ? selectedGenre : undefined}
