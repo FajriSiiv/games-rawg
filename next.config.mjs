@@ -4,7 +4,11 @@ const nextConfig = {
   reactStrictMode: true, // Bagian dari konfigurasi Next.js, bukan bagian dari konfigurasi PWA
   swcMinify: true,
   images: {
-    domains: ["fakestoreapi.com", "media.rawg.io"],
+    domains: [
+      "fakestoreapi.com",
+      "media.rawg.io",
+      "avatars.githubusercontent.com",
+    ],
   },
   // Konfigurasi untuk PWA
   // pwa: {
